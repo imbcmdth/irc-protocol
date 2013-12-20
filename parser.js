@@ -1,14 +1,18 @@
-var stream = require("stream");
+var stream = require("stream"),
+    util = require('util');
 
-var Parser = module.exports = function Parser(options) {
+module.exports = Parser;
+
+function Parser(options) {
   options = options || {};
   options.objectMode = true;
 
   stream.Transform.call(this, options);
 
   this.buffer = "";
-};
-Parser.prototype = Object.create(stream.Transform.prototype);
+}
+
+util.inherits(Parser, stream.Transform);
 
 Parser.prototype._transform = function _transform(input, encoding, done) {
   input = input.toString();

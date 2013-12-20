@@ -1,12 +1,16 @@
-var stream = require("stream");
+var stream = require("stream"),
+    util = require('util');
 
-var Serialiser = module.exports = function Serialiser(options) {
+module.exports = Serialiser;
+
+function Serialiser(options) {
   options = options || {};
   options.objectMode = true;
 
   stream.Transform.call(this, options);
-};
-Serialiser.prototype = Object.create(stream.Transform.prototype);
+}
+
+util.inherits(Serialiser, stream.Transform);
 
 Serialiser.prototype._transform = function _transform(input, encoding, done) {
   this.push(this.format_message(input) + "\r\n");
